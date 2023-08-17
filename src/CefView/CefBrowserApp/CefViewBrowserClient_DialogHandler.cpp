@@ -18,6 +18,7 @@ CefViewBrowserClient::GetDialogHandler()
   return this;
 }
 
+#if CEF_VERSION_MAJOR > 91
 bool
 CefViewBrowserClient::OnFileDialog(CefRefPtr<CefBrowser> browser,
                                    FileDialogMode mode,
@@ -25,6 +26,16 @@ CefViewBrowserClient::OnFileDialog(CefRefPtr<CefBrowser> browser,
                                    const CefString& default_file_path,
                                    const std::vector<CefString>& accept_filters,
                                    CefRefPtr<CefFileDialogCallback> callback)
+#else
+bool
+CefViewBrowserClient::OnFileDialog(CefRefPtr<CefBrowser> browser,
+                                   FileDialogMode mode,
+                                   const CefString& title,
+                                   const CefString& default_file_path,
+                                   const std::vector<CefString>& accept_filters,
+                                   int selected_accept_filter,
+                                   CefRefPtr<CefFileDialogCallback> callback)
+#endif
 {
   auto delegate = client_delegate_.lock();
   if (delegate)

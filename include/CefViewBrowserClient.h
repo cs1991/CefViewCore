@@ -192,12 +192,22 @@ protected:
   // CefDialogHandler
 #pragma region CefDialogHandler
   virtual CefRefPtr<CefDialogHandler> GetDialogHandler() override;
+#if CEF_VERSION_MAJOR > 91
   virtual bool OnFileDialog(CefRefPtr<CefBrowser> browser,
                             FileDialogMode mode,
                             const CefString& title,
                             const CefString& default_file_path,
                             const std::vector<CefString>& accept_filters,
                             CefRefPtr<CefFileDialogCallback> callback) override;
+#else
+  virtual bool OnFileDialog(CefRefPtr<CefBrowser> browser,
+                            FileDialogMode mode,
+                            const CefString& title,
+                            const CefString& default_file_path,
+                            const std::vector<CefString>& accept_filters,
+                            int selected_accept_filter,
+                            CefRefPtr<CefFileDialogCallback> callback) override;
+#endif
 #pragma endregion
 
   // CefDisplayHandler methods
