@@ -1,3 +1,4 @@
+
 #
 # The link for downloading the CEF binary sdk
 #
@@ -26,6 +27,10 @@ set(CEF_SDK_VERSION
 #
 # Download CEF binary package
 #
+if(NOT CEF_SDK_VERSION)
+  message(FATAL_ERROR "CEF_SDK_VERSION is missing!")
+endif()
+
 if(OS_WINDOWS)
   set(CEF_SDK_PLATFORM "windows")
 elseif(OS_LINUX)

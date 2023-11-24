@@ -43,7 +43,7 @@ public:
 
   virtual void reportJSResult(CefRefPtr<CefBrowser>& browser,
                               int64_t frameId,
-                              int64_t contextId,
+                              const std::string& context,
                               const CefRefPtr<CefValue>& result) = 0;
 
   // context menu handler
@@ -80,27 +80,11 @@ public:
 
     // display handler
 #pragma region DisplayHandler
-  virtual bool onDragEnter(CefRefPtr<CefBrowser> browser,
-                           CefRefPtr<CefDragData> dragData,
-                           CefDragHandler::DragOperationsMask mask)
-  {
-    return true;
-  }
-  virtual void draggableRegionChanged(CefRefPtr<CefBrowser>& browser,
-                                      const std::vector<CefDraggableRegion>& regions) = 0;
-
   virtual void addressChanged(CefRefPtr<CefBrowser>& browser, int64_t frameId, const std::string& url) = 0;
 
   virtual void titleChanged(CefRefPtr<CefBrowser>& browser, const std::string& title) = 0;
 
   virtual void faviconURLChanged(CefRefPtr<CefBrowser> browser, const std::vector<CefString>& icon_urls) = 0;
-
-  virtual bool downloadFavicon()
-  {
-    return true;
-  }
-
-  virtual void faviconChanged(CefRefPtr<CefImage> image) = 0;
 
   virtual bool tooltipMessage(CefRefPtr<CefBrowser>& browser, const std::string& text) = 0;
 
@@ -130,6 +114,19 @@ public:
                                  CefRefPtr<CefDownloadItemCallback> callback) = 0;
 #pragma endregion
 
+#pragma region GetDragHandler
+  // drag hander
+  virtual bool onDragEnter(CefRefPtr<CefBrowser> browser,
+                           CefRefPtr<CefDragData> dragData,
+                           CefDragHandler::DragOperationsMask mask)
+  {
+    return true;
+  }
+
+  virtual void draggableRegionChanged(CefRefPtr<CefBrowser>& browser,
+                                      const std::vector<CefDraggableRegion>& regions) = 0;
+#pragma endregion
+
   // life span handler
 #pragma region LifeSpanHandler
   virtual bool onBeforePopup(CefRefPtr<CefBrowser>& browser,
@@ -143,6 +140,8 @@ public:
   virtual void onAfterCreate(CefRefPtr<CefBrowser>& browser) = 0;
 
   virtual bool doClose(CefRefPtr<CefBrowser> browser) = 0;
+
+  virtual bool requestClose(CefRefPtr<CefBrowser> browser) = 0;
 
   virtual void onBeforeClose(CefRefPtr<CefBrowser> browser) = 0;
 #pragma endregion
